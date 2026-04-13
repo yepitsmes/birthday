@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Sunidhi's Birthday 🎂</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Titan+One&family=Sriracha&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- COUNTDOWN SCREEN -->
+<div id="countdown-screen">
+  <canvas id="countdown-canvas"></canvas>
+  <div class="countdown-content">
+    <div class="cd-mewmew"><img src="./images/mewmew.gif" alt=""></div>
+    <h1 class="cd-title">Something Special is Coming</h1>
+    <p class="cd-sub">A surprise is being prepared for</p>
+    <h2 class="cd-name">Dear Sunidhi 🥳</h2>
+    <div class="cd-boxes">
+      <div class="cd-box"><span id="cd-days">00</span><label>Days</label></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-box"><span id="cd-hours">00</span><label>Hours</label></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-box"><span id="cd-mins">00</span><label>Mins</label></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-box"><span id="cd-secs">00</span><label>Secs</label></div>
+    </div>
+    <!-- # EDIT 1 [index.html]: Fixed label from "27 May" to "21 Jun" -->
+    <p class="cd-date-label">🎂 13 Apr — Sunidhi's Birthday 🎂</p>
+  </div>
+</div>
+
+<!-- MAIN PAGE -->
+<!-- # EDIT 2 [index.html]: main-page uses opacity fade-in transition (handled in JS) -->
+<div id="main-page" style="display:none">
+  <!-- # EDIT 3 [index.html]: confetti-canvas is at top level so it overlays ALL modals (z-index:99999 in CSS) -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div id="music-btn" title="Toggle Music">
+    <i class="fa-solid fa-music"></i>
+  </div>
+  <!-- # EDIT 4 [index.html]: Music src updated to a more festive/birthday-style track -->
+  <audio id="bg-music" loop>
+    <source src="/images/meow.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="cake-btn" title="Cut the Cake!">🎂</div>
+
+  <div id="wrapper">
+    <div class="bunting__top">
+      <img src="./images/bunting.png" class="bunting__img bunting__left" alt="">
+      <img src="./images/bunting.png" class="bunting__img bunting__right" alt="">
+    </div>
+    <div class="flag__birthday">
+      <img src="./images/1.png" class="flag__left" alt="">
+      <img src="./images/1.png" class="flag__right" alt="">
+    </div>
+
+    <div class="content">
+      <div class="left">
+        <div class="title">
+          <h1 class="happy">
+            <span style="--t:4s">H</span><span style="--t:4.2s">a</span><span style="--t:4.4s">p</span><span style="--t:4.6s">p</span><span style="--t:4.8s">y</span>
+          </h1>
+          <h1 class="birthday">
+            <span style="--t:5s">B</span><span style="--t:5.2s">i</span><span style="--t:5.4s">r</span><span style="--t:5.6s">t</span><span style="--t:5.8s">h</span><span style="--t:6s">d</span><span style="--t:6.2s">a</span><span style="--t:6.4s">y</span>
+          </h1>
+          <div class="hat"><img src="./images/hat.png" alt="" width="130"></div>
+        </div>
+        <!-- # EDIT 5 [index.html]: Date text typed by JS is now "21 Jun" (fixed in initMain) -->
+        <div class="date__of__birth"><span></span></div>
+        <div class="btn">
+          <!-- # EDIT 6 [index.html]: letter button now also triggers full-page confetti (in JS) -->
+          <button id="btn__letter">
+            <div class="mail">Open My Message 💌 <i class="fa-regular fa-envelope"></i></div>
+          </button>
+        </div>
+      </div>
+      <div class="right">
+        <div class="box__account">
+          <div class="image"><img src="./images/unnamed.png" alt=""></div>
+          <div class="name">
+            <span class="party-emoji">🥳</span><span>Dear Sunidhi</span><span class="party-emoji">🥳</span>
+          </div>
+          <div class="balloon_one"><img width="100px" src="./images/balloon1.png" alt=""></div>
+          <div class="balloon_two"><img width="100px" src="./images/balloon2.png" alt=""></div>
+        </div>
+        <div class="diamond__spin">
+          <div class="diamond__inner">
+            <div class="text__diamond">
+              <span style="--i:1">h</span><span style="--i:2">a</span><span style="--i:3">p</span><span style="--i:4">p</span><span style="--i:5">y</span><span style="--i:6">-</span><span style="--i:7">b</span><span style="--i:8">i</span><span style="--i:9">r</span><span style="--i:10">t</span><span style="--i:11">h</span><span style="--i:12">d</span><span style="--i:13">a</span><span style="--i:14">y</span><span style="--i:15">-</span>
+            </div>
+            <span class="diamond-emoji">🥳</span>
+          </div>
+        </div>
+        <div class="mewmew__float"><img src="./images/mewmew.gif" alt="" width="90"></div>
+      </div>
+    </div>
+
+    <!-- # EDIT 7 [index.html]: Added star6 + star7 for better star multiplicity around "21 Jun" date area -->
+    <div class="decorate_star star1" style="--t:15s"></div>
+    <div class="decorate_star star2" style="--t:15.2s"></div>
+    <div class="decorate_star star3" style="--t:15.4s"></div>
+    <div class="decorate_star star4" style="--t:15.6s"></div>
+    <div class="decorate_star star5" style="--t:15.8s"></div>
+    <div class="decorate_star star6" style="--t:16s"></div>
+    <div class="decorate_star star7" style="--t:16.2s"></div>
+
+    <div class="decorate_flower--one" style="--t:15s"><img width="20" src="./images/decorate_flower.png" alt=""></div>
+    <div class="decorate_flower--two" style="--t:15.3s"><img width="20" src="./images/decorate_flower.png" alt=""></div>
+    <div class="decorate_flower--three" style="--t:15.6s"><img width="20" src="./images/decorate_flower.png" alt=""></div>
+    <div class="decorate_bottom"><img src="./images/decorate.png" alt="" width="100"></div>
+    <div class="smiley__icon"><img src="./images/smiley_icon.png" alt="" width="100"></div>
+
+    <!-- WHATSAPP MESSAGE CARD -->
+    <div class="boxMail" id="boxMail">
+      <button class="mail-close-btn" id="closeMailBtn"><i class="fa-solid fa-xmark"></i></button>
+      <div class="boxMail-container">
+        <div class="card1">
+          <div class="userImg"><img src="images/unnamed.png" alt=""></div>
+          <h4 class="username">To: Sunidhi 🥳</h4>
+          <h3>Happy Birthday</h3>
+          <div class="card1__mewmew"><img src="./images/mewmew.gif" alt=""></div>
+        </div>
+        <div class="card2">
+          <div class="card2-content">
+            <div class="wa-header">
+              <div class="wa-avatar"><img src="./images/unnamed.png" alt=""></div>
+              <div class="wa-info">
+                <!-- # EDIT 8 [index.html]: wa-name now uses Sriracha bold (clearer) — enforced via updated CSS -->
+                <span class="wa-name">Sunidhi 🥳</span>
+                <span class="wa-status" id="wa-status">online</span>
+              </div>
+              <div class="wa-icons">
+                <i class="fa-solid fa-video"></i>
+                <i class="fa-solid fa-phone"></i>
+              </div>
+            </div>
+            <div class="wa-chat" id="wa-chat">
+              <div class="wa-date-stamp">Today 🎂</div>
+            </div>
+            <div class="wa-typing" id="wa-typing" style="display:none">
+              <img src="./images/mewmew.gif" width="26" alt="">
+              <div class="typing-dots"><span></span><span></span><span></span></div>
+              <span class="typing-label">typing...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAKE MODAL -->
+    <div id="cake-modal">
+      <div class="cake-box">
+        <button class="cake-close-btn" id="cakeCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+        <h2 class="cake-title" id="cake-title">🎂 Your Birthday Cake! 🎂</h2>
+        <p class="cake-sub" id="cake-sub">Make a wish and cut the cake!</p>
+        <div class="cake-wrap" id="cake-wrap">
+          <svg id="cake-svg" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="120" cy="185" rx="100" ry="12" fill="#e0c97f" opacity=".4"/>
+            <rect x="30" y="130" width="180" height="55" rx="8" fill="#C0392B"/>
+            <rect x="30" y="130" width="180" height="14" rx="4" fill="#E74C3C"/>
+            <rect x="45" y="85" width="150" height="50" rx="8" fill="#6C3483"/>
+            <rect x="45" y="85" width="150" height="12" rx="4" fill="#9B59B6"/>
+            <path d="M30,144 Q50,152 70,144 Q90,136 110,144 Q130,152 150,144 Q170,136 190,144 Q205,150 210,144" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M45,97 Q65,105 85,97 Q105,89 125,97 Q145,105 165,97 Q185,89 195,97" stroke="#FFD700" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <circle cx="80" cy="155" r="6" fill="#FFD700"/>
+            <circle cx="120" cy="158" r="5" fill="#fff"/>
+            <circle cx="160" cy="155" r="6" fill="#FFD700"/>
+            <text x="65" y="118" font-size="14">⭐</text><text x="105" y="115" font-size="12">✨</text><text x="145" y="118" font-size="14">⭐</text>
+            <rect x="80" y="62" width="8" height="26" rx="4" fill="#FFD700"/>
+            <rect x="116" y="58" width="8" height="30" rx="4" fill="#E74C3C"/>
+            <rect x="152" y="62" width="8" height="26" rx="4" fill="#9B59B6"/>
+            <ellipse id="f1a" cx="84" cy="59" rx="5" ry="8" fill="#FF9800" opacity=".9"/>
+            <ellipse id="f1b" cx="84" cy="57" rx="2.5" ry="4" fill="#FFD700"/>
+            <ellipse id="f2a" cx="120" cy="54" rx="6" ry="9" fill="#FF9800" opacity=".9"/>
+            <ellipse id="f2b" cx="120" cy="52" rx="3" ry="5" fill="#FFD700"/>
+            <ellipse id="f3a" cx="156" cy="59" rx="5" ry="8" fill="#FF9800" opacity=".9"/>
+            <ellipse id="f3b" cx="156" cy="57" rx="2.5" ry="4" fill="#FFD700"/>
+            <line id="cut-line" x1="120" y1="80" x2="120" y2="190" stroke="rgba(255,255,255,0)" stroke-width="3" stroke-dasharray="6,4"/>
+            <text id="knife-hint" x="90" y="75" font-size="20" opacity=".7">🔪</text>
+          </svg>
+        </div>
+        <div class="cake-cut-result" id="cake-cut-result" style="display:none">
+          <div class="cake-slice-big">🍰</div>
+          <p>You cut the cake!<br>Happy Birthday Sunidhi! ByShubham🥳🎊</p>
+        </div>
+        <button class="cut-btn" id="cut-btn">🔪 Cut the Cake!</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// # EDIT 9 [index.html JS]: Birthday date corrected to 21 June 2025
+const BIRTHDAY = new Date('2026-04-14T00:00:01');
+function pad(n){ return String(n).padStart(2,'0'); }
+
+// ── REAL-TIME COUNTDOWN — opens site when reaches 0 ──
+function tick(){
+  const now = new Date(), diff = BIRTHDAY - now;
+  if(diff <= 0){
+    // # EDIT 10 [index.html JS]: Smooth fade transition countdown → main page
+    const cs = document.getElementById('countdown-screen');
+    cs.style.transition = 'opacity 1.2s ease';
+    cs.style.opacity = '0';
+    setTimeout(()=>{
+      cs.style.display = 'none';
+      const mp = document.getElementById('main-page');
+      mp.style.display = 'block';
+      mp.style.opacity = '0';
+      mp.style.transition = 'opacity 1.2s ease';
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{ mp.style.opacity = '1'; }));
+      // # EDIT 11 [index.html JS]: Confetti fires immediately when site opens after countdown
+      launchConfetti(300);
+      initMain();
+      setTimeout(tryPlay, 800);
+    }, 1200);
+    clearInterval(tickInterval);
+    return;
+  }
+  document.getElementById('cd-days').textContent  = pad(Math.floor(diff/86400000));
+  document.getElementById('cd-hours').textContent = pad(Math.floor((diff%86400000)/3600000));
+  document.getElementById('cd-mins').textContent  = pad(Math.floor((diff%3600000)/60000));
+  document.getElementById('cd-secs').textContent  = pad(Math.floor((diff%60000)/1000));
+}
+const tickInterval = setInterval(tick,1000);
+tick();
+
+// ── COUNTDOWN BG PARTICLES (richer, mixed shapes) ──
+(function(){
+  const c=document.getElementById('countdown-canvas'), x=c.getContext('2d');
+  const cols=['#FFD700','#9B59B6','#C0392B','#2E5FA3','#fff','#FF69B4','#00CED1'];
+  function resize(){ c.width=innerWidth; c.height=innerHeight; }
+  resize(); addEventListener('resize',resize);
+  const p=[];
+  // # EDIT 12 [index.html JS]: More varied particles (80 instead of 55, mixed shapes)
+  for(let i=0;i<80;i++) p.push({
+    x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+    r:Math.random()*4+1,
+    vx:(Math.random()-.5)*.6, vy:(Math.random()-.5)*.6,
+    c:cols[i%cols.length], a:Math.random()*.7+.2,
+    type: i%4
+  });
+  (function draw(){
+    x.clearRect(0,0,c.width,c.height);
+    p.forEach(q=>{
+      x.save(); x.globalAlpha=q.a; x.fillStyle=q.c;
+      x.beginPath();
+      if(q.type===0){ x.arc(q.x,q.y,q.r,0,Math.PI*2); }
+      else if(q.type===1){ x.rect(q.x-q.r,q.y-q.r,q.r*2,q.r*2); }
+      else {
+        for(let s=0;s<5;s++){
+          const a=s*Math.PI*2/5-Math.PI/2, ai=a+Math.PI/5;
+          x.lineTo(q.x+Math.cos(a)*q.r*2,q.y+Math.sin(a)*q.r*2);
+          x.lineTo(q.x+Math.cos(ai)*q.r,q.y+Math.sin(ai)*q.r);
+        }
+      }
+      x.closePath(); x.fill(); x.restore();
+      q.x+=q.vx; q.y+=q.vy;
+      if(q.x<0)q.x=c.width; if(q.x>c.width)q.x=0;
+      if(q.y<0)q.y=c.height; if(q.y>c.height)q.y=0;
+    });
+    requestAnimationFrame(draw);
+  })();
+})();
+
+// ── FULL-PAGE CONFETTI (covers everything including modals) ──
+let confettiAnim=null;
+// # EDIT 13 [index.html JS]: launchConfetti upgraded — full page, mixed shapes (rect/circle/star), smooth fade-out
+function launchConfetti(count){
+  const c=document.getElementById('confetti-canvas');
+  if(!c) return;
+  if(confettiAnim){ cancelAnimationFrame(confettiAnim); }
+  const x=c.getContext('2d');
+  c.width=innerWidth; c.height=innerHeight;
+  const cols=['#FFD700','#9B59B6','#C0392B','#2E5FA3','#FF69B4','#00CED1','#fff','#FF4500','#7FFF00'];
+  const shapes=['rect','circle','star'];
+  const p=[];
+  for(let i=0;i<(count||200);i++) p.push({
+    x:Math.random()*c.width, y:Math.random()*c.height-c.height,
+    w:Math.random()*14+4, h:Math.random()*7+2,
+    r:Math.random()*Math.PI*2,
+    vx:(Math.random()-.5)*4, vy:Math.random()*5+2,
+    vr:(Math.random()-.5)*.18,
+    c:cols[i%cols.length], shape:shapes[i%3], op:1
+  });
+  let f=0;
+  function draw(){
+    x.clearRect(0,0,c.width,c.height);
+    p.forEach(q=>{
+      x.save(); x.translate(q.x,q.y); x.rotate(q.r);
+      x.globalAlpha=Math.max(0,q.op); x.fillStyle=q.c;
+      if(q.shape==='rect'){ x.fillRect(-q.w/2,-q.h/2,q.w,q.h); }
+      else if(q.shape==='circle'){ x.beginPath();x.arc(0,0,q.w/2.5,0,Math.PI*2);x.fill(); }
+      else {
+        x.beginPath();
+        for(let s=0;s<5;s++){
+          const a=s*Math.PI*2/5-Math.PI/2, ai=a+Math.PI/5;
+          x.lineTo(Math.cos(a)*q.w/1.5, Math.sin(a)*q.w/1.5);
+          x.lineTo(Math.cos(ai)*q.w/3.5, Math.sin(ai)*q.w/3.5);
+        }
+        x.closePath(); x.fill();
+      }
+      x.restore();
+      q.x+=q.vx; q.y+=q.vy; q.r+=q.vr;
+      if(f>180) q.op-=.006;
+      if(q.y>c.height+20){q.y=-20;q.x=Math.random()*c.width;q.op=1;}
+    });
+    x.globalAlpha=1; f++;
+    if(f<320){ confettiAnim=requestAnimationFrame(draw); }
+    else{ x.clearRect(0,0,c.width,c.height); confettiAnim=null; }
+  }
+  confettiAnim=requestAnimationFrame(draw);
+}
+
+// ── MAIN INIT ──
+function initMain(){
+  // # EDIT 14 [index.html JS]: Date text corrected to "21 Jun"
+  let di=0, dob=document.querySelector('.date__of__birth span'), dtxt='14 Apr';
+  setTimeout(()=>{
+    let t=setInterval(()=>{
+      if(di<dtxt.length){ dob.textContent+=dtxt[di++]; }
+      else {
+        // # EDIT 15 [index.html JS]: Fixed star duplication bug (was cloning same node incorrectly)
+        ['prepend','append'].forEach(method=>{
+          const star=document.createElement('i');
+          star.className='fa-solid fa-star';
+          document.querySelector('.date__of__birth')[method](star);
+        });
+        clearInterval(t);
+      }
+    },100);
+  },12000);
+}
+
+// ── MUSIC ──
+let playing=false;
+const aud=document.getElementById('bg-music');
+function tryPlay(){
+  aud.play().then(()=>{
+    playing=true;
+    document.getElementById('music-btn').classList.add('on');
+    document.getElementById('music-btn').querySelector('i').className='fa-solid fa-pause';
+  }).catch(()=>{});
+}
+
+document.getElementById('music-btn').addEventListener('click',function(){
+  if(playing){ aud.pause(); this.classList.remove('on'); this.querySelector('i').className='fa-solid fa-music'; }
+  else { aud.play().catch(()=>{}); this.classList.add('on'); this.querySelector('i').className='fa-solid fa-pause'; }
+  playing=!playing;
+  const r=document.createElement('span'); r.className='ripple-burst'; this.appendChild(r); setTimeout(()=>r.remove(),600);
+  // # EDIT 16 [index.html JS]: Confetti on music button click
+  launchConfetti(120);
+});
+
+// ── WHATSAPP CHAT ──
+const WA=[
+  {f:'them',t:'Yo Sunidhi! '},
+  {f:'me',  t:'Kya hua? 😊'},
+  {f:'them',t:'Aaj tera special din hai! 🎉🎂'},
+  {f:'them',t:'Happy Birthday Sunidhi! 🥳🎈'},
+  {f:'them',t:'Stay happy and fulfill all your dreams!!'},
+  {f:'me',  t:'Thank you 🥹'},
+  {f:'them',t:'Ok ab celebrate kar ✨, mai aj disturb nahi karuga'},
+  {f:'them',t:'bye GN'},
+];
+let mi=0, chatStarted=false;
+
+function typeMsg(obj,cb){
+  const chat=document.getElementById('wa-chat');
+  const typ=document.getElementById('wa-typing');
+  const sta=document.getElementById('wa-status');
+  if(obj.f==='them'){
+    typ.style.display='flex'; sta.textContent='typing...';
+    setTimeout(()=>{
+      typ.style.display='none'; sta.textContent='online';
+      addBubble(obj,chat); if(cb) setTimeout(cb,700);
+    },1000+obj.t.length*16);
+  } else { addBubble(obj,chat); if(cb) setTimeout(cb,350); }
+}
+
+function addBubble(obj,chat){
+  const d=new Date();
+  const t=pad(d.getHours())+':'+pad(d.getMinutes());
+  const el=document.createElement('div');
+  el.className='wa-bubble '+(obj.f==='me'?'wa-out':'wa-in');
+  el.innerHTML='<span class="wa-text">'+obj.t+'</span><span class="wa-time">'+t+'</span>';
+  // # EDIT 17 [index.html JS]: Smoother bubble entrance with cubic-bezier spring
+  el.style.cssText='opacity:0;transform:translateY(14px) scale(0.95)';
+  chat.appendChild(el);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    el.style.cssText='opacity:1;transform:translateY(0) scale(1);transition:all .35s cubic-bezier(.34,1.56,.64,1)';
+  }));
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function nextMsg(){ if(mi>=WA.length) return; typeMsg(WA[mi++],()=>{ if(mi<WA.length) nextMsg(); }); }
+
+document.getElementById('btn__letter').addEventListener('click',()=>{
+  document.getElementById('boxMail').classList.add('active');
+  // # EDIT 18 [index.html JS]: Full-page confetti when opening letter
+  launchConfetti(160);
+  if(!chatStarted){
+    chatStarted=true;
+    document.getElementById('wa-chat').innerHTML='<div class="wa-date-stamp">Today 🎂</div>';
+    mi=0; setTimeout(nextMsg,500);
+  }
+});
+document.getElementById('closeMailBtn').addEventListener('click',()=>{
+  document.getElementById('boxMail').classList.remove('active');
+});
+document.getElementById('boxMail').addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('active');
+});
+
+// ── CAKE ──
+let cut=false;
+document.getElementById('cake-btn').addEventListener('click',()=>{
+  cut=false;
+  document.getElementById('cake-modal').classList.add('active');
+  document.getElementById('cake-cut-result').style.display='none';
+  document.getElementById('cut-btn').style.display='';
+  document.getElementById('cake-title').textContent='🎂 Your Birthday Cake! 🎂';
+  document.getElementById('cake-sub').textContent='Make a wish and cut the cake!';
+  document.getElementById('cake-wrap').style.display='';
+  ['f1a','f1b','f2a','f2b','f3a','f3b'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.opacity=''; });
+  const cl=document.getElementById('cut-line'); if(cl) cl.style.stroke='rgba(255,255,255,0)';
+  const kh=document.getElementById('knife-hint'); if(kh) kh.style.opacity='.7';
+  // # EDIT 19 [index.html JS]: Confetti when opening cake modal
+  launchConfetti(120);
+});
+
+document.getElementById('cakeCloseBtn').addEventListener('click',()=>document.getElementById('cake-modal').classList.remove('active'));
+document.getElementById('cake-modal').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('active'); });
+
+document.getElementById('cut-btn').addEventListener('click',function(){
+  if(cut) return; cut=true;
+  const cl=document.getElementById('cut-line');
+  if(cl){ cl.style.stroke='rgba(255,255,255,0.9)'; cl.style.transition='all .4s'; }
+  ['f1a','f1b','f2a','f2b','f3a','f3b'].forEach(id=>{ const e=document.getElementById(id); if(e){ e.style.transition='opacity .5s'; e.style.opacity='0'; } });
+  const kh=document.getElementById('knife-hint'); if(kh) kh.style.opacity='0';
+  document.getElementById('cake-title').textContent='🎉 Happy Birthday Sunidhi! 🎉';
+  document.getElementById('cake-sub').textContent='';
+  this.style.display='none';
+  setTimeout(()=>{
+    document.getElementById('cake-wrap').style.display='none';
+    document.getElementById('cake-cut-result').style.display='flex';
+    // # EDIT 20 [index.html JS]: Mega confetti (350 particles) after cutting cake
+    launchConfetti(350);
+  },1200);
+});
+
+// Flame flicker
+setInterval(()=>{
+  [['f1a',5,8],['f2a',6,9],['f3a',5,8]].forEach(([id,rx,ry])=>{
+    const e=document.getElementById(id);
+    if(e && e.style.opacity!=='0'){ e.setAttribute('rx',(rx-1+Math.random()*2).toFixed(1)); e.setAttribute('ry',(ry-1+Math.random()*2).toFixed(1)); }
+  });
+},110);
+</script>
+</body>
+</html>

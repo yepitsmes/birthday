@@ -1,0 +1,428 @@
+/* # EDIT 1 [style.css]: Google font imports kept, added Nunito for clearer WhatsApp chat text */
+@import url('https://fonts.googleapis.com/css2?family=Coiny&family=Titan+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nerko+One&family=Sriracha&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+*{padding:0;margin:0;box-sizing:border-box;}
+
+:root{
+  --yellow:#FFD700; --yellow-d:#E6B800; --yellow-l:#FFF8C0;
+  --navy:#0D2B55; --navy-m:#1A3F7A; --navy-l:#2E5FA3;
+  --red:#C0392B; --red-l:#E74C3C; --red-m:#D35F5F;
+  --purple:#6C3483; --purple-m:#9B59B6; --purple-l:#D2A4E6;
+  --bg:#FFFBDB; --white:#fff; --border:#D2A4E6;
+}
+
+html,body{height:100%;margin:0;padding:0;overflow-x:hidden;}
+body{background:var(--bg);font-size:16px;}
+
+/* ══════════════════════════
+   COUNTDOWN SCREEN
+══════════════════════════ */
+#countdown-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--purple) 50%,var(--red) 100%);
+  display:flex;align-items:center;justify-content:center;
+  /* # EDIT 2 [style.css]: Added transition for smooth fade-out */
+  transition:opacity 1.2s ease;
+}
+#countdown-canvas{position:absolute;inset:0;pointer-events:none;}
+
+.countdown-content{
+  position:relative;z-index:2;text-align:center;padding:30px 20px;
+  animation:cdFadeIn 1s ease forwards;
+}
+@keyframes cdFadeIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+
+.cd-mewmew{margin-bottom:16px;}
+.cd-mewmew img{width:90px;animation:mewFloat 2.5s infinite ease-in-out;}
+@keyframes mewFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+.cd-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,5vw,3rem);color:var(--yellow);text-shadow:0 0 20px rgba(255,215,0,.5);margin-bottom:8px;}
+.cd-sub{color:rgba(255,255,255,.8);font-family:'Sriracha',cursive;font-size:1rem;margin-bottom:6px;}
+.cd-name{font-family:'Dancing Script',cursive;font-size:clamp(1.4rem,4vw,2.2rem);color:var(--yellow);margin-bottom:28px;text-shadow:0 0 12px rgba(255,215,0,.4);}
+
+/* # EDIT 3 [style.css]: Countdown boxes — added pulse animation on seconds digit */
+.cd-boxes{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.cd-box{
+  background:rgba(255,255,255,.12);backdrop-filter:blur(8px);
+  border:2px solid rgba(255,215,0,.4);border-radius:16px;
+  padding:16px 20px;min-width:76px;text-align:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.2);
+  transition:transform .15s ease;
+}
+.cd-box:hover{transform:scale(1.05);}
+.cd-box span{display:block;font-family:'Titan One',sans-serif;font-size:clamp(2rem,6vw,3rem);color:var(--yellow);line-height:1;text-shadow:0 0 10px rgba(255,215,0,.5);}
+.cd-box label{font-family:'Sriracha',cursive;font-size:.75rem;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px;}
+.cd-sep{font-size:2.5rem;color:var(--yellow);font-weight:bold;opacity:.7;margin-top:-10px;animation:sepBlink 1s infinite ease-in-out;}
+@keyframes sepBlink{0%,100%{opacity:.7;}50%{opacity:.2;}}
+.cd-date-label{font-family:'Dancing Script',cursive;color:rgba(255,255,255,.75);font-size:1.1rem;}
+
+/* ══════════════════════════
+   CONFETTI CANVAS
+   # EDIT 4 [style.css]: z-index raised to 999999 so it covers ALL modals (cake, mail, etc.)
+══════════════════════════ */
+#confetti-canvas{
+  position:fixed;inset:0;pointer-events:none;
+  z-index:999999;
+}
+
+/* ══════════════════════════
+   MUSIC BUTTON
+══════════════════════════ */
+#music-btn{
+  position:fixed;bottom:24px;right:24px;z-index:1000;
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--yellow),var(--yellow-d));
+  border:3px solid var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25),3px 3px 0 var(--navy);
+  /* # EDIT 5 [style.css]: Smoother transition for hover/active states */
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;
+  animation:musicPop .6s 17s both ease;
+}
+@keyframes musicPop{0%{transform:scale(0);}70%{transform:scale(1.2);}100%{transform:scale(1);}}
+#music-btn i{font-size:1.2rem;color:var(--navy);z-index:1;}
+#music-btn:hover{transform:scale(1.12) translate(-2px,-2px);box-shadow:0 6px 20px rgba(0,0,0,.3),5px 5px 0 var(--navy);}
+#music-btn.on{background:linear-gradient(135deg,var(--purple-m),var(--purple));}
+#music-btn.on i{color:#fff;}
+.ripple-burst{
+  position:absolute;width:100%;height:100%;border-radius:50%;
+  background:rgba(255,255,255,.5);animation:ripple .6s ease-out forwards;pointer-events:none;
+}
+@keyframes ripple{to{transform:scale(2.5);opacity:0;}}
+
+/* ══════════════════════════
+   CAKE BUTTON
+══════════════════════════ */
+#cake-btn{
+  position:fixed;bottom:86px;right:24px;z-index:1000;
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple-m),var(--purple));
+  border:3px solid var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.6rem;
+  box-shadow:0 4px 16px rgba(0,0,0,.25),3px 3px 0 var(--navy);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;
+  animation:musicPop .6s 17.5s both ease;
+}
+#cake-btn:hover{transform:scale(1.12) translate(-2px,-2px);}
+
+/* ══════════════════════════
+   WRAPPER / GRID BG
+══════════════════════════ */
+#wrapper{
+  position:relative;background-color:transparent;
+  background-image:
+    linear-gradient(0deg,transparent 24%,rgba(13,43,85,.09) 25%,rgba(13,43,85,.09) 26%,transparent 27%,transparent 74%,rgba(13,43,85,.09) 75%,rgba(13,43,85,.09) 76%,transparent 77%,transparent),
+    linear-gradient(90deg,transparent 24%,rgba(13,43,85,.09) 25%,rgba(13,43,85,.09) 26%,transparent 27%,transparent 74%,rgba(13,43,85,.09) 75%,rgba(13,43,85,.09) 76%,transparent 77%,transparent);
+  background-size:80px 80px;min-height:100vh;overflow:hidden;z-index:1;
+}
+
+/* ── BUNTING ── */
+/* # EDIT 6 [style.css]: Smoother bunting drop with ease-out */
+.bunting__top{position:relative;width:100%;display:flex;justify-content:space-between;align-items:flex-start;z-index:10;pointer-events:none;transform:translateY(-120px);animation:buntingDrop 1.4s .5s forwards cubic-bezier(.22,1,.36,1);}
+@keyframes buntingDrop{to{transform:translateY(0);}}
+.bunting__img{width:52%;max-width:500px;display:block;filter:hue-rotate(200deg) saturate(1.8) brightness(1.05);}
+.bunting__right{transform:scaleX(-1);}
+
+/* ── FLAGS ── */
+/* # EDIT 7 [style.css]: Smoother flag drop animation */
+.flag__birthday{display:flex;justify-content:space-between;transform:translateY(-200px);animation:flagDown 1.8s 2s forwards cubic-bezier(.22,1,.36,1);margin-top:-30px;}
+@keyframes flagDown{to{transform:translateY(-10px);}}
+.flag__birthday img{width:clamp(180px,30vw,350px);}
+.flag__birthday .flag__left{transform:rotate(-10deg) translate(-20px,30px);filter:hue-rotate(30deg) saturate(1.5);}
+.flag__birthday .flag__right{transform:rotate(10deg) translate(20px,30px) scaleX(-1);filter:hue-rotate(30deg) saturate(1.5);}
+
+/* ── LAYOUT ── */
+.content{width:100%;position:relative;display:flex;padding-top:3rem;}
+.content .left,.content .right{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+.content .left{width:40%;}
+.content .right{width:60%;}
+
+/* ── BUTTON ── */
+/* # EDIT 8 [style.css]: Smoother pop animation with cubic-bezier */
+.left .btn{transform:scale(0);animation:pop 2s 16s forwards cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.15);}100%{transform:scale(1);}}
+#btn__letter{
+  position:relative;margin-top:30px;background:var(--yellow);
+  outline:none;padding:10px 22px;font-size:1rem;border-radius:50px;
+  border:3px solid var(--navy);font-family:"Sriracha",cursive;color:var(--navy);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;
+  font-weight:700;box-shadow:3px 3px 0 var(--navy);
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;
+}
+#btn__letter:hover{background:var(--yellow-d);box-shadow:5px 5px 0 var(--navy);transform:translate(-2px,-2px) scale(1.04);}
+#btn__letter:active{transform:scale(.92);}
+#btn__letter i{margin-left:6px;}
+
+/* ── TITLE ── */
+.title{position:relative;width:100%;display:flex;justify-content:center;font-family:"Titan One",sans-serif;font-size:clamp(1.8rem,5vw,3rem);flex-direction:column;perspective:1000px;}
+.title .happy,.title .birthday{position:relative;font-weight:bold;display:flex;justify-content:center;}
+.title .happy{color:var(--yellow);text-shadow:4px 4px var(--navy),-4px 4px var(--navy),4px -4px var(--navy),-4px -4px var(--navy),4px 8px 0 var(--navy);}
+.title .birthday{color:var(--purple-m);text-shadow:4px 4px var(--navy),-4px 4px var(--navy),4px -4px var(--navy),-4px -4px var(--navy),4px 8px 0 var(--navy);}
+/* # EDIT 9 [style.css]: Letter animation smoothed with cubic-bezier spring */
+.title .happy span,.title .birthday span{transform:translateY(50px);opacity:0;visibility:hidden;animation:txtUp .55s var(--t) cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes txtUp{100%{transform:translateY(0);opacity:1;visibility:visible;}}
+.title .hat{position:absolute;right:45px;top:-350px;transform:rotate(-40deg);z-index:-1;animation:topHat 4s 7s forwards ease;filter:hue-rotate(200deg) saturate(1.4);}
+@keyframes topHat{20%,30%{top:-30px;transform-origin:left;transform:rotate(-40deg);}35%,100%{top:-30px;transform:rotate(0deg);}}
+
+/* ── DATE/NAME ── */
+/* # EDIT 10 [style.css]: date__of__birth stars styled (extra-star uses gold color) */
+.date__of__birth,.name{display:flex;justify-content:space-around;align-items:center;background:var(--yellow);border-radius:50px;margin-top:20px;font-family:"Sriracha",cursive;}
+.date__of__birth{border:3px solid var(--navy);position:relative;transform:translateY(-100px);z-index:-1;opacity:0;visibility:hidden;width:0;animation:dateAnim 5s 9s forwards;box-shadow:3px 3px 0 var(--navy);}
+@keyframes dateAnim{20%,40%{width:0;height:0;transform:translateY(0);opacity:1;visibility:visible;}45%{transform:translateY(0);opacity:1;visibility:visible;width:min(300px,80vw);height:0;}50%,100%{transform:translateY(0);opacity:1;visibility:visible;width:min(300px,80vw);height:50px;}}
+.name{position:absolute;padding:0 20px;bottom:-20px;border:3px solid var(--navy);font-family:'Dancing Script',cursive;box-shadow:3px 3px 0 var(--navy);gap:8px;}
+.date__of__birth span,.name span{font-weight:bold;margin:0 15px;color:var(--navy);}
+.date__of__birth span{font-size:1.2rem;}.name span{font-size:1.5rem;}
+.date__of__birth i{color:var(--navy);font-size:1rem;margin:0 4px;animation:starSpin 2s infinite linear;}
+.date__of__birth i.extra-star{color:var(--red);font-size:.8rem;}
+@keyframes starSpin{0%{transform:rotate(0deg) scale(1);}50%{transform:rotate(180deg) scale(1.3);}100%{transform:rotate(360deg) scale(1);}}
+.party-emoji{font-size:1.4rem;animation:bounce 1s infinite ease-in-out;}
+@keyframes bounce{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+
+/* ── PROFILE ── */
+/* # EDIT 11 [style.css]: Smoother profile slide-up with cubic-bezier */
+.right .box__account{position:relative;transform:translateY(700px);animation:slideUp 8s 7s forwards cubic-bezier(.22,1,.36,1);}
+@keyframes slideUp{to{transform:translateY(0);}}
+.content .right .image{position:relative;width:clamp(180px,35vw,400px);height:clamp(180px,35vw,400px);border-radius:50%;overflow:hidden;display:flex;align-items:center;border:6px solid var(--navy);box-shadow:0 0 0 6px var(--yellow),0 0 0 12px var(--navy);}
+.content .right .image img{width:100%;object-fit:cover;}
+
+/* ── MEWMEW FLOAT ── */
+.mewmew__float{position:absolute;bottom:-30px;left:-20px;transform:scale(0);animation:pop 3s 16s forwards cubic-bezier(.34,1.56,.64,1);z-index:5;}
+.mewmew__float img{animation:mewFloat 3s infinite ease-in-out;filter:drop-shadow(0 4px 8px rgba(13,43,85,.2));}
+
+/* ── DIAMOND SPINNER ── */
+/* # EDIT 12 [style.css]: Diamond spin smoother (linear infinite) — no change needed, was fine */
+.diamond__spin{position:absolute;top:20px;right:50px;display:flex;justify-content:center;align-items:center;transform:scale(0);animation:pop 3s 15s forwards cubic-bezier(.34,1.56,.64,1);}
+.diamond__inner{position:relative;width:110px;height:110px;background:linear-gradient(135deg,var(--yellow),var(--yellow-d));border:4px solid var(--navy);box-shadow:0 0 20px rgba(255,215,0,.6),4px 4px 0 var(--navy);display:flex;justify-content:center;align-items:center;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);animation:spinDiamond 6s linear infinite;}
+@keyframes spinDiamond{to{transform:rotate(360deg);}}
+.text__diamond{position:absolute;inset:0;}
+.text__diamond span{top:0%;left:50%;position:absolute;color:var(--navy);transform:rotate(calc(var(--i)*24deg));transform-origin:0 48px;font-family:"Sriracha",cursive;text-transform:uppercase;font-size:.65rem;font-weight:bold;}
+.diamond-emoji{position:absolute;font-size:1.5rem;animation:counterSpin 6s linear infinite;}
+@keyframes counterSpin{to{transform:rotate(-360deg);}}
+
+/* ── BALLOONS ── */
+/* # EDIT 13 [style.css]: Balloon swing smoothed */
+.right .balloon_one{position:absolute;top:-70px;left:-70px;animation:b1 2.5s infinite ease-in-out;filter:hue-rotate(180deg) saturate(1.5);}
+@keyframes b1{0%,100%{transform-origin:bottom right;transform:rotate(0deg);}50%{transform-origin:bottom right;transform:rotate(5deg);}}
+.right .balloon_two{position:absolute;top:170px;right:-65px;z-index:-1;transform:rotate(10deg);animation:b2 2.5s infinite ease-in-out;filter:hue-rotate(270deg) saturate(1.3);}
+@keyframes b2{0%,100%{transform-origin:bottom left;transform:rotate(10deg);}50%{transform-origin:bottom left;transform:rotate(5deg);}}
+
+/* ── DECORATIONS ── */
+/* # EDIT 14 [style.css]: Added star6 and star7 positions (near date-of-birth area) */
+.decorate_star{position:absolute;transform:scale(0);clip-path:polygon(0 50%,35% 35%,50% 0,65% 35%,100% 50%,65% 65%,50% 100%,35% 65%);animation:pop 3s var(--t) forwards cubic-bezier(.34,1.56,.64,1),pStar 2s 16s infinite ease-in-out;}
+.star1{width:20px;height:20px;top:75px;left:300px;background:var(--yellow);}
+.star2{width:15px;height:20px;top:35px;right:360px;background:var(--purple-m);}
+.star3{width:14px;height:14px;top:290px;left:630px;background:var(--red-m);}
+.star4{width:18px;height:18px;bottom:60px;left:35px;background:var(--navy-l);}
+.star5{width:16px;height:18px;bottom:140px;left:500px;background:var(--yellow);}
+/* New stars flanking the date of birth box */
+.star6{width:22px;height:22px;top:320px;left:180px;background:var(--yellow);}
+.star7{width:18px;height:18px;top:310px;left:240px;background:var(--purple-m);}
+@keyframes pStar{0%,100%{transform:scale(1) rotate(0deg);}25%{transform:scale(.8) rotate(15deg);}75%{transform:scale(1.1) rotate(-10deg);}}
+.decorate_bottom{position:absolute;right:0;bottom:-10px;filter:hue-rotate(200deg) saturate(1.3);}
+.decorate_flower--one{position:absolute;top:250px;left:50px;transform:scale(0);animation:pop 3s var(--t) forwards cubic-bezier(.34,1.56,.64,1);filter:hue-rotate(60deg);}
+.decorate_flower--two{position:absolute;top:225px;left:540px;transform:scale(0);animation:pop 3s var(--t) forwards cubic-bezier(.34,1.56,.64,1);filter:hue-rotate(270deg);}
+.decorate_flower--three{position:absolute;top:150px;right:235px;transform:scale(0);animation:pop 3s var(--t) forwards cubic-bezier(.34,1.56,.64,1);filter:hue-rotate(180deg);}
+.smiley__icon{position:absolute;bottom:180px;left:600px;transform:scale(0);animation:pop 3s 15s forwards cubic-bezier(.34,1.56,.64,1);filter:hue-rotate(30deg) saturate(1.2);}
+
+/* ══════════════════════════
+   WHATSAPP MAIL CARD
+══════════════════════════ */
+.boxMail{
+  position:fixed;inset:0;background:rgba(13,43,85,.82);
+  display:flex;align-items:center;justify-content:center;z-index:10000;
+  opacity:0;visibility:hidden;
+  transition:opacity .35s ease,visibility .35s ease;
+}
+.boxMail.active{opacity:1;visibility:visible;}
+.boxMail.active .boxMail-container{transform:scale(1) translateY(0);opacity:1;}
+
+.mail-close-btn{
+  position:fixed;top:14px;right:18px;z-index:10001;
+  width:38px;height:38px;border-radius:50%;border:none;
+  background:var(--yellow);color:var(--navy);font-size:1.1rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 3px var(--navy);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.mail-close-btn:hover{transform:scale(1.15);}
+
+.boxMail-container{
+  width:min(760px,94vw);height:min(520px,80vh);
+  display:flex;border-radius:18px;overflow:hidden;
+  box-shadow:0 24px 70px rgba(13,43,85,.6),0 0 0 3px var(--yellow);
+  transform:scale(.85) translateY(30px);opacity:0;
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .4s ease;
+}
+
+/* CARD 1 */
+.card1{
+  width:38%;height:100%;
+  background:linear-gradient(160deg,var(--purple) 0%,#2A0855 55%,var(--navy) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 16px;gap:10px;overflow:hidden;position:relative;
+  border-right:3px solid var(--yellow);
+}
+.card1::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--yellow),transparent);animation:shim 2.5s infinite linear;}
+@keyframes shim{0%{background-position:-200% center;}100%{background-position:200% center;}}
+.userImg{width:80px;height:80px;border-radius:50%;overflow:hidden;border:3px solid var(--yellow);box-shadow:0 0 0 3px var(--purple),0 0 18px rgba(255,215,0,.4);}
+.userImg img{width:100%;height:100%;object-fit:cover;}
+.username{color:var(--yellow);font-family:'Dancing Script',cursive;font-size:1rem;text-align:center;text-shadow:0 0 8px rgba(255,215,0,.5);}
+.card1 h3{font-family:'Dancing Script',cursive;font-size:clamp(20px,3vw,36px);color:var(--yellow);text-transform:uppercase;letter-spacing:4px;transform:rotate(-4deg);text-align:center;text-shadow:0 0 10px rgba(255,215,0,.5);width:90%;}
+.card1__mewmew{position:absolute;bottom:0;right:0;}
+.card1__mewmew img{width:72px;animation:mewFloat 3s infinite ease-in-out;filter:drop-shadow(0 0 8px rgba(255,215,0,.4));}
+
+/* CARD 2 — WhatsApp style */
+.card2{width:62%;height:100%;display:flex;flex-direction:column;background:#E5DDD5;overflow:hidden;}
+.card2-content{display:flex;flex-direction:column;height:100%;}
+
+/* WA Header */
+.wa-header{
+  background:linear-gradient(90deg,var(--purple) 0%,var(--navy-m) 100%);
+  padding:10px 14px;display:flex;align-items:center;gap:10px;
+  border-bottom:2px solid var(--yellow);flex-shrink:0;
+}
+.wa-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid var(--yellow);}
+.wa-avatar img{width:100%;height:100%;object-fit:cover;}
+.wa-info{flex:1;display:flex;flex-direction:column;}
+/* # EDIT 15 [style.css]: wa-name switched to Nunito bold for much clearer readability */
+.wa-name{font-family:'Nunito',sans-serif;font-weight:700;color:var(--yellow);font-size:1rem;letter-spacing:.3px;}
+/* # EDIT 16 [style.css]: wa-status clearer font */
+.wa-status{font-size:.72rem;color:rgba(255,215,0,.85);font-family:'Nunito',sans-serif;font-weight:600;}
+.wa-icons{display:flex;gap:14px;color:var(--yellow);font-size:1.1rem;}
+.wa-icons i{cursor:pointer;opacity:.8;}
+
+/* Chat area */
+.wa-chat{
+  flex:1;overflow-y:auto;padding:12px 10px;
+  background:#E5DDD5 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='rgba(0,0,0,0.04)' stroke-width='1'/%3E%3C/svg%3E") repeat;
+  display:flex;flex-direction:column;gap:8px;
+  scrollbar-width:thin;scrollbar-color:var(--purple-l) transparent;
+  /* # EDIT 17 [style.css]: Smooth scroll behaviour */
+  scroll-behavior:smooth;
+}
+.wa-chat::-webkit-scrollbar{width:4px;}
+.wa-chat::-webkit-scrollbar-thumb{background:var(--purple-l);border-radius:4px;}
+
+.wa-date-stamp{text-align:center;font-size:.72rem;color:#555;font-weight:600;background:rgba(255,255,255,.8);border-radius:10px;padding:3px 10px;margin:4px auto;width:fit-content;font-family:'Nunito',sans-serif;}
+
+/* # EDIT 18 [style.css]: wa-bubble font changed to Nunito for clear readable chat text (was Dancing Script) */
+.wa-bubble{
+  max-width:82%;padding:8px 12px 4px;border-radius:12px;
+  font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:500;
+  line-height:1.5;word-break:break-word;position:relative;
+  box-shadow:0 1px 4px rgba(0,0,0,.12);
+  display:flex;flex-direction:column;
+}
+.wa-in{align-self:flex-start;background:#fff;border-radius:0 12px 12px 12px;color:#111;}
+.wa-in::before{content:'';position:absolute;top:0;left:-7px;width:0;height:0;border-top:8px solid #fff;border-left:8px solid transparent;}
+.wa-out{align-self:flex-end;background:linear-gradient(135deg,var(--purple) 0%,var(--navy-m) 100%);border-radius:12px 0 12px 12px;color:#fff;}
+.wa-out::before{content:'';position:absolute;top:0;right:-7px;width:0;height:0;border-top:8px solid var(--purple);border-right:8px solid transparent;}
+/* # EDIT 19 [style.css]: wa-text specific font weight for legibility */
+.wa-text{font-size:.92rem;line-height:1.55;font-family:'Nunito',sans-serif;font-weight:500;}
+.wa-time{font-size:.65rem;opacity:.55;align-self:flex-end;margin-top:3px;font-family:'Nunito',sans-serif;}
+
+/* Typing indicator */
+.wa-typing{
+  padding:8px 14px;display:flex;align-items:center;gap:8px;
+  background:rgba(108,52,131,.15);border-top:1px solid rgba(108,52,131,.15);flex-shrink:0;
+}
+.typing-dots{display:flex;gap:4px;align-items:center;}
+.typing-dots span{width:7px;height:7px;border-radius:50%;background:var(--purple-m);animation:dot 1.2s infinite ease-in-out;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes dot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
+/* # EDIT 20 [style.css]: typing-label clearer font */
+.typing-label{font-size:.75rem;color:var(--purple-m);font-family:'Nunito',sans-serif;font-weight:600;}
+
+/* ══════════════════════════
+   CAKE MODAL
+══════════════════════════ */
+#cake-modal{
+  position:fixed;inset:0;background:rgba(13,43,85,.88);z-index:20000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;
+}
+#cake-modal.active{opacity:1;visibility:visible;}
+#cake-modal.active .cake-box{transform:scale(1) translateY(0);}
+
+.cake-box{
+  background:linear-gradient(160deg,#2A0855 0%,var(--navy) 60%,#1A0040 100%);
+  border:3px solid var(--yellow);border-radius:24px;
+  padding:28px 24px;width:min(360px,92vw);text-align:center;
+  transform:scale(.8) translateY(40px);transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+  position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,215,0,.3);
+}
+.cake-close-btn{
+  position:absolute;top:12px;right:14px;background:var(--yellow);border:2px solid var(--navy);
+  border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--navy);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.cake-close-btn:hover{transform:scale(1.15);}
+.cake-title{font-family:'Dancing Script',cursive;font-size:clamp(1.3rem,4vw,1.9rem);color:var(--yellow);margin-bottom:6px;text-shadow:0 0 12px rgba(255,215,0,.4);}
+.cake-sub{font-family:'Sriracha',cursive;color:rgba(255,255,255,.7);font-size:.9rem;margin-bottom:14px;}
+
+.cake-wrap{display:flex;justify-content:center;}
+#cake-svg{width:min(240px,80vw);filter:drop-shadow(0 8px 20px rgba(0,0,0,.4));}
+
+/* # EDIT 21 [style.css]: cut-btn spring hover animation */
+.cut-btn{
+  margin-top:16px;padding:10px 28px;background:linear-gradient(135deg,var(--yellow),var(--yellow-d));
+  border:3px solid var(--navy);border-radius:50px;font-family:'Sriracha',cursive;
+  font-size:1rem;font-weight:700;color:var(--navy);cursor:pointer;
+  box-shadow:3px 3px 0 var(--navy);transition:all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.cut-btn:hover{transform:translate(-2px,-2px) scale(1.04);box-shadow:5px 5px 0 var(--navy);}
+.cut-btn:active{transform:scale(.92);}
+
+.cake-cut-result{
+  display:none;flex-direction:column;align-items:center;gap:10px;
+  animation:resultIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes resultIn{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:scale(1);}}
+.cake-slice-big{font-size:5rem;animation:bounce 1s infinite ease-in-out;}
+.cake-cut-result p{font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--yellow);text-shadow:0 0 10px rgba(255,215,0,.4);line-height:1.5;}
+
+/* ══════════════════════════
+   MOBILE RESPONSIVE
+══════════════════════════ */
+@media(max-width:768px){
+  .bunting__img{width:54%;}
+  .flag__birthday{margin-top:-20px;}
+  .flag__birthday .flag__left{transform:rotate(-10deg) translate(-80px,3px);}
+  .flag__birthday .flag__right{transform:rotate(10deg) translate(50px,30px) scaleX(-1);}
+  .content{flex-direction:column;align-items:center;padding-top:1rem;gap:20px;}
+  .content .left,.content .right{width:100%;}
+  .title{font-size:clamp(2rem,10vw,3.5rem);letter-spacing:4px;}
+  .title .hat{right:10px;top:-40px!important;width:70px!important;}
+  .content .right .image{width:clamp(200px,60vw,280px);height:clamp(200px,60vw,280px);}
+  .right .balloon_one{top:0;left:-55px;}
+  .right .balloon_one img{width:65px!important;}
+  .right .balloon_two{top:120px;right:-45px;}
+  .right .balloon_two img{width:65px!important;}
+  .diamond__spin{top:10px;right:clamp(-10px,4vw,20px);}
+  .diamond__inner{width:85px;height:85px;}
+  .text__diamond span{transform-origin:0 36px;font-size:.55rem;}
+  .mewmew__float{bottom:-20px;left:-5px;}
+  .mewmew__float img{width:65px;}
+  .decorate_flower--two,.decorate_flower--three,.smiley__icon{display:none;}
+  .star3,.star4,.star5,.star6,.star7{display:none;}
+  /* Mail card stacked */
+  .boxMail-container{flex-direction:column;height:88vh;border-radius:14px;}
+  .card1{width:100%;height:40%;border-right:none;border-bottom:3px solid var(--yellow);}
+  .card2{width:100%;height:60%;}
+  #music-btn,#cake-btn{width:46px;height:46px;}
+  #cake-btn{bottom:80px;}
+  .cd-boxes{gap:6px;}
+  .cd-box{min-width:62px;padding:12px 14px;}
+}
+@media(max-width:420px){
+  .title{font-size:clamp(1.8rem,11vw,2.5rem);}
+  .name span{font-size:1.1rem;}
+  .boxMail-container{height:92vh;}
+  .card1 h3{font-size:1.2rem;}
+}
